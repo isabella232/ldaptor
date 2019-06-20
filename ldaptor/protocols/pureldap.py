@@ -19,6 +19,8 @@ import string
 
 import six
 
+from ldaptor._encoder import to_unicode
+
 from ldaptor.protocols.pureber import (
 
     BERBoolean, BERDecoderContext, BEREnumerated, BERInteger, BERNull,
@@ -495,8 +497,8 @@ class LDAPFilter_equalityMatch(LDAPAttributeValueAssertion):
     tag = CLASS_CONTEXT | 0x03
 
     def asText(self):
-        return '('+self.attributeDesc.value+'=' \
-               +self.escaper(self.assertionValue.value)+')'
+        return '('+(to_unicode(self.attributeDesc.value)+'=' \
+               +self.escaper(to_unicode(self.assertionValue.value)))+')'
 
 class LDAPFilter_substrings_initial(LDAPString):
     tag = CLASS_CONTEXT | 0x00
