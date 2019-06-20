@@ -15,6 +15,8 @@
 
 """LDAP protocol message conversion; no application logic here."""
 
+from __future__ import unicode_literals
+
 import string
 
 import six
@@ -511,13 +513,13 @@ class LDAPFilter_substrings_any(LDAPString):
     tag = CLASS_CONTEXT | 0x01
 
     def asText(self):
-        return self.escaper(self.value)
+        return self.escaper(to_unicode(self.value))
 
 class LDAPFilter_substrings_final(LDAPString):
     tag = CLASS_CONTEXT | 0x02
 
     def asText(self):
-        return self.escaper(self.value)
+        return self.escaper(to_unicode(self.value))
 
 class LDAPBERDecoderContext_Filter_substrings(BERDecoderContext):
     Identities = {
@@ -588,23 +590,23 @@ class LDAPFilter_substrings(BERSequence):
         if final is None:
             final = ''
 
-        return '(' + self.type + '=' \
-               + '*'.join([initial] + any + [final]) + ')'
+        return '(' + to_unicode(self.type) + '=' \
+               + to_unicode('*'.join([initial] + any + [final])) + ')'
 
 
 class LDAPFilter_greaterOrEqual(LDAPAttributeValueAssertion):
     tag = CLASS_CONTEXT | 0x05
 
     def asText(self):
-        return '(' + self.attributeDesc.value + '>=' + \
-               self.escaper(self.assertionValue.value) + ')'
+        return '(' + to_unicode(self.attributeDesc.value) + '>=' + \
+               self.escaper(to_unicode(self.assertionValue.value)) + ')'
 
 class LDAPFilter_lessOrEqual(LDAPAttributeValueAssertion):
     tag = CLASS_CONTEXT | 0x06
 
     def asText(self):
-        return '(' + self.attributeDesc.value + '<=' + \
-               self.escaper(self.assertionValue.value) + ')'
+        return '(' + to_unicode(self.attributeDesc.value) + '<=' + \
+               self.escaper(to_unicode(self.assertionValue.value)) + ')'
 
 class LDAPFilter_present(LDAPAttributeDescription):
     tag = CLASS_CONTEXT | 0x07
@@ -617,8 +619,8 @@ class LDAPFilter_approxMatch(LDAPAttributeValueAssertion):
     tag = CLASS_CONTEXT | 0x08
 
     def asText(self):
-        return '(' + self.attributeDesc.value + '~=' + \
-               self.escaper(self.assertionValue.value) + ')'
+        return '(' + to_unicode(self.attributeDesc.value) + '~=' + \
+               self.escaper(to_unicode(self.assertionValue.value)) + ')'
 
 
 class LDAPMatchingRuleId(LDAPString):
@@ -741,11 +743,11 @@ class LDAPFilter_extensibleMatch(LDAPMatchingRuleAssertion):
 
     def asText(self):
         return '(' + \
-               (self.type.value if self.type else '') + \
+               (to_unicode(self.type.value) if self.type else '') + \
                (':dn' if self.dnAttributes and self.dnAttributes.value else '') + \
-               ((':' + self.matchingRule.value) if self.matchingRule else '') + \
+               ((':' + to_unicode(self.matchingRule.value)) if self.matchingRule else '') + \
                ':=' + \
-               self.escaper(self.matchValue.value) + \
+               self.escaper(to_unicode(self.matchValue.value)) + \
                ')'
 
 class LDAPBERDecoderContext_Filter(BERDecoderContext):
