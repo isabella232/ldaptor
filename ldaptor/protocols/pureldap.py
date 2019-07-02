@@ -506,7 +506,7 @@ class LDAPFilter_substrings_initial(LDAPString):
     tag = CLASS_CONTEXT | 0x00
 
     def asText(self):
-        return self.escaper(self.value)
+        return self.escaper(to_unicode(self.value))
 
 
 class LDAPFilter_substrings_any(LDAPString):
