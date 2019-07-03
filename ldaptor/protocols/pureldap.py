@@ -15,8 +15,6 @@
 
 """LDAP protocol message conversion; no application logic here."""
 
-from __future__ import unicode_literals
-
 import string
 
 import six
