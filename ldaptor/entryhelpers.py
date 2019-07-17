@@ -192,7 +192,7 @@ class MatchMixin(object):
                 assert isinstance(substrings[0], pureldap.LDAPFilter_substrings_any)
                 r = []
                 for possible in possibleMatches:
-                    i = possible.lower().find(substrings[0].value.lower())
+                    i = possible.lower().find(to_unicode(substrings[0].value).lower())
                     if i >= 0:
                         r.append(possible[i:])
                 possibleMatches = r
