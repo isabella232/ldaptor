@@ -612,7 +612,7 @@ class LDAPFilter_present(LDAPAttributeDescription):
     tag = CLASS_CONTEXT | 0x07
 
     def asText(self):
-        return '(%s=*)' % self.value
+        return '(%s=*)' % to_unicode(self.value)
 
 
 class LDAPFilter_approxMatch(LDAPAttributeValueAssertion):
